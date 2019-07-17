@@ -1,0 +1,142 @@
+
+@import "bootstrap";
+
+@mixin fluid-type($properties, $min-vw, $max-vw, $min-value, $max-value) {
+  @each $property in $properties {
+    #{$property}: $min-value;
+  }
+
+  @media (min-width: $min-vw) {
+    @each $property in $properties {
+      #{$property}: calc(#{$min-value} + #{strip-unit($max-value - $min-value)} * (100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)});
+    }
+  }
+
+  @media (min-width: $max-vw) {
+    @each $property in $properties {
+      #{$property}: $max-value;
+    }
+  }
+}
+
+@function strip-unit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+$enable-shadows: true;
+
+body {
+    font-family: 'Helvetica', 'Arial', sans-serif;
+    line-height: 1.1;
+    padding: 4px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#instructions {
+    @include fluid-type(font-size, 600px, 1200px, 16px, 32px);
+    flex: 0 0 0;
+    text-align: center;
+}
+
+#instructions.correct {
+    @include fluid-type(font-size, 600px, 1200px, 32px, 64px);
+    color: green;
+    font-weight: bold;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+#family-cards {
+    @extend .noselect;
+    $max-card-width: 7em;
+    $card-margin: 0.5rem;
+    $default-width: 350px;
+    flex: 1 1 auto;
+    display: inline-flex;
+    width: 100%;
+    max-width: $default-width;
+    min-width: $default-width;
+    @media screen and (max-width: $default-width) {
+        max-width: 100%;
+    }
+    max-height: 100%;
+    align-items: flex-start;
+    align-content: flex-start;
+    justify-content: flex-start;
+    min-width: 0;
+    overflow-y: auto;
+    min-height: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /*
+    @media screen and (orientation: portrait) {
+        width: calc(#{$max-card-width} + (#{$card-margin} * 2));
+        font-size: 3.5vh;
+    }
+    @media screen and (orientation: landscape) {
+        width: 100%;
+        font-size: 1.6vw;
+        white-space: nowrap;
+    } */
+    div {
+        @extend .card;
+        @extend .shadow;
+        @extend .noselect;
+        display: inline-flex;
+        text-align: center;
+        white-space: nowrap;
+        min-width: 5.5em;
+        min-height: 1.1em;
+        flex: 1 1 100%;
+        /* width: $max-card-width; */
+        pointer-events: auto;
+        margin: $card-margin;
+        span {
+            padding: 0.7em;
+        }
+    }
+}
+
+.draggable-source--is-dragging {
+    visibility: hidden;
+}
+.se-pre-con {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    max-height: 100%;
+    z-index: 9999;
+    background: url(https://cdnjs.cloudflare.com/ajax/libs/galleriffic/2.0.1/css/loader.gif) center no-repeat #fff;
+}

@@ -1,0 +1,33 @@
+{
+    "name": "TaxonomyTycoon",
+    "version": "1.0.0",
+    "keywords": [
+        "util",
+        "functional",
+        "server",
+        "client",
+        "browser"
+    ],
+    "author": "tt",
+    "contributors": [],
+    "dependencies": {
+        "@shopify/draggable": "^1.0.0-beta.8",
+        "bootstrap": "4.3.1",
+        "sortablejs": "^1.10.0-rc3"
+    },
+    "scripts": {
+        "watch": "concurrently \"sass -I node_modules/bootstrap/scss --watch styles.scss built.css\" \"watchify -t [ babelify --presets [ @babel/preset-env ] ] code.js -o bundled.js -v\" \"live-server --no-browser --wait=2000 \"",
+        "build:js": "browserify -t [ babelify --presets [ @babel/preset-env ] ] code.js  | uglifyjs -mc > bundled.js",
+        "build:css": "sass -I node_modules/bootstrap/scss styles.scss built.css",
+        "build": "run-s build:*",
+        "start": "npm run watch"
+    },
+    "devDependencies": {
+        "@babel/core": "^7.5.0",
+        "@babel/preset-env": "^7.5.2",
+        "@babel/preset-react": "^7.0.0",
+        "babel-core": "^6.26.3",
+        "babel-preset-env": "^1.7.0",
+        "babelify": "^10.0.0"
+    }
+}
